@@ -6,71 +6,42 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
         title: "Navigation",
-        home: HomeScreen(),
+        home: MainScreen(),
       );
 }
 
-class HomeScreen extends StatelessWidget {
+class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text("Demo"),
+          title: Text("Main Screen"),
         ),
-        body: Center(child: SelectionButton()),
+        body: GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DetailScreen(),
+                ));
+          },
+          child: Hero(
+              tag: "imageHero",
+              child: Image.network("https://picsum.photos/250?image=9")),
+        ),
       );
 }
 
-class SelectionButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => RaisedButton(
-        onPressed: () {
-          _navigateAndDisplaySelection(context);
-        },
-        child: Text("オプション選択"),
-      );
-
-  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SelectionScreen(),
-      ),
-    );
-    Scaffold.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(result)));
-  }
-}
-
-class SelectionScreen extends StatelessWidget {
+class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text("選択してください"),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(context, "選択肢1");
-                  },
-                  child: Text("選択肢1"),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(context, "選択肢2");
-                  },
-                  child: Text("選択肢2"),
-                ),
-              ),
-            ],
+        body: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Center(
+            child: Hero(
+                tag: 'imageHero',
+                child: Image.network("https://picsum.photos/250?image=9")),
           ),
         ),
       );
